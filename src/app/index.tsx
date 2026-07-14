@@ -1,16 +1,15 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Device from "expo-device";
+import { Platform, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { LocationsContainer } from "@/components/locations-container";
+import { SettingsContainer } from "@/components/settings-container";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import { MaxContentWidth, Spacing } from "@/constants/theme";
 
 function getDevMenuHint() {
-  if (Platform.OS === 'web') {
+  if (Platform.OS === "web") {
     return <ThemedText type="small">use browser devtools</ThemedText>;
   }
   if (Device.isDevice) {
@@ -20,7 +19,7 @@ function getDevMenuHint() {
       </ThemedText>
     );
   }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+  const shortcut = Platform.OS === "android" ? "cmd+m (or ctrl+m)" : "cmd+d";
   return (
     <ThemedText type="small">
       press <ThemedText type="code">{shortcut}</ThemedText>
@@ -33,29 +32,20 @@ export default function HomeScreen() {
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
           <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
+            Hando Clock
           </ThemedText>
         </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
         <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
+          <SettingsContainer />
+          <LocationsContainer />
         </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
+        <ThemedView type="backgroundElement" style={styles.previewContainer}>
+          <ThemedView
+            type="backgroundElement"
+            style={styles.widgetPreview}
+          ></ThemedView>
+        </ThemedView>
       </SafeAreaView>
     </ThemedView>
   );
@@ -64,35 +54,56 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    flexDirection: "row",
   },
   safeArea: {
     flex: 1,
     paddingHorizontal: Spacing.four,
-    alignItems: 'center',
+    alignItems: "center",
     gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
     maxWidth: MaxContentWidth,
   },
   heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     paddingHorizontal: Spacing.four,
     gap: Spacing.four,
   },
   title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
+    textAlign: "center",
   },
   stepContainer: {
+    flex: 1,
     gap: Spacing.three,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     paddingHorizontal: Spacing.three,
     paddingVertical: Spacing.four,
     borderRadius: Spacing.four,
+    boxShadow: [
+      {
+        offsetX: 1,
+        offsetY: 1,
+        blurRadius: 1,
+        color: "rgba(0,0,0,0.25)",
+      },
+      {
+        offsetX: -1,
+        offsetY: -1,
+        blurRadius: 1,
+        color: "rgba(100, 100, 100, 0.7)",
+      },
+    ],
+  },
+  previewContainer: {
+    alignItems: "center",
+  },
+  widgetPreview: {
+    backgroundColor: "red",
+    width: "100%",
+    maxWidth: 380,
+    aspectRatio: 1.9,
+    borderRadius: 28,
+    overflow: "hidden",
   },
 });
