@@ -69,20 +69,8 @@ const createStyles = (colors: typeof Colors.light | typeof Colors.dark) =>
     input: {
       padding: Spacing.two,
       borderRadius: Spacing.two,
-      boxShadow: [
-        {
-          offsetX: -1,
-          offsetY: -1,
-          blurRadius: 1,
-          color: "rgba(0,0,0,0.25)",
-        },
-        {
-          offsetX: 1,
-          offsetY: 1,
-          blurRadius: 1,
-          color: "rgba(100, 100, 100, 0.7)",
-        },
-      ],
+      boxShadow:
+        "-1px -1px 1px rgba(0,0,0,0.25), 1px 1px 1px rgba(100,100,100,0.7)",
     },
     wrapper: {
       height: 48,
