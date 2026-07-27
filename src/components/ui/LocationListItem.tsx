@@ -1,27 +1,34 @@
-import { Spacing } from "@/constants/theme";
+import { Colors, Spacing } from "@/constants/theme";
+import { getTimeForTimezone } from "@/utils/TimeFormatter";
 import * as React from "react";
-import { StyleSheet, Switch, View } from "react-native";
+import { StyleSheet, Switch, View, useColorScheme } from "react-native";
 import { ThemedText } from "../themed-text";
 
 type LocationListItemProps = {
-  label?: string;
+  name?: string;
   offset?: string;
   enabled?: boolean;
+  color?: string;
+  timeZone?: string;
 };
 export function LocationListItem({
-  label = "somewhere fun",
-  offset,
+  name = "somewhere fun",
   enabled,
+  timeZone,
+  color,
 }: LocationListItemProps) {
   const [derivedEnabled, setDerivedEnabled] = React.useState(enabled ?? false);
+  const scheme = useColorScheme();
+  const colors = Colors[scheme === "unspecified" ? "light" : scheme];
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <ThemedText style={styles.label} type="smallBold">
-        {label}
+        {name}
       </ThemedText>
-      {offset && (
+      {timeZone && (
         <ThemedText style={styles.offset} type="small">
-          {offset}
+          {getTimeForTimezone(timeZone, "en-US")}
         </ThemedText>
       )}
       <View style={styles.switchContainer}>
@@ -35,25 +42,26 @@ export function LocationListItem({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#ccc",
-    paddingHorizontal: Spacing.two,
-  },
-  label: {
-    flex: 1,
-  },
-  offset: {
-    textAlign: "right",
-  },
-  switchContainer: {
-    alignItems: "flex-end",
-  },
-  switch: {
-    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
-  },
-});
+const createStyles = (colors: typeof Colors.light | typeof Colors.dark) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: colors.text,
+      paddingHorizontal: Spacing.two,
+    },
+    label: {
+      flex: 1,
+    },
+    offset: {
+      textAlign: "right",
+    },
+    switchContainer: {
+      alignItems: "flex-end",
+    },
+    switch: {
+      transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
+    },
+  });
