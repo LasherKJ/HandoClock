@@ -1,17 +1,15 @@
 import { Colors } from "@/constants/theme";
 import { useLocationStore } from "@/hooks/use-location-store";
-import { getTimeForTimezone } from "@/utils/TimeFormatter";
 import { Pressable, StyleSheet, useColorScheme } from "react-native";
 import { ThemedText } from "../themed-text";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const tzLookup = require("tz-lookup") as (lat: string, lon: string) => string;
 
 type result = {
-  id: string;
-  displayName: {
-    text: string;
-  };
-  timeZone?: {
-    id: string;
-  };
+  place_id: string;
+  display_name: string;
+  lat: string;
+  lon: string;
 };
 
 type LocationAddItemProps = {
@@ -27,11 +25,12 @@ export const LocationAddItem = ({
   const colors = Colors[scheme === "unspecified" ? "light" : scheme];
   const styles = createStyles(colors);
   const addLocation = useLocationStore((state) => state.addLocation);
+  const timeZone = tzLookup(result.lat, result.lon);
   const handlePress = () => {
     addLocation({
-      id: result.id,
-      name: result.displayName.text,
-      timeZone: result.timeZone?.id ?? "UTC",
+      id: result.place_id,
+      name: result.display_name,
+      timeZone: timeZone,
       color: "red",
       enabled: true,
     });
@@ -39,17 +38,15 @@ export const LocationAddItem = ({
   };
   return (
     <Pressable
-      key={result.id}
+      key={result.place_id}
       style={({ pressed }) => [
         styles.locationResult,
         pressed && styles.pressed,
       ]}
       onPress={handlePress}
     >
-      <ThemedText type="smallBold">{result.displayName.text}</ThemedText>
-      <ThemedText type="small">
-        {getTimeForTimezone(result.timeZone?.id ?? "UTC", "en-US")}
-      </ThemedText>
+      <ThemedText type="smallBold">{result.display_name}</ThemedText>
+      <ThemedText type="small">{timeZone}</ThemedText>
     </Pressable>
   );
 };

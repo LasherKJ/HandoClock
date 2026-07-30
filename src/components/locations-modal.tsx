@@ -1,5 +1,6 @@
+import { LocationAddItem } from "@/components/ui/LocationAddItem";
 import { Colors, Spacing } from "@/constants/theme";
-import { LocationSearch } from "@/utils/LocationSearch";
+import { LocationSearchWithNominatim } from "@/utils/LocationSearch";
 import * as React from "react";
 import { useEffect } from "react";
 import {
@@ -10,7 +11,6 @@ import {
   useColorScheme,
 } from "react-native";
 import { ThemedText } from "./themed-text";
-import { LocationAddItem } from "./ui/LocationAddItem";
 
 type SearchResult = {
   id: string;
@@ -29,14 +29,14 @@ export function LocationsModal({
   visible: boolean;
   setVisible: (visible: boolean) => void;
 }) {
-  const [searchResults, setSearchResults] = React.useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = React.useState<any[]>([]);
   const scheme = useColorScheme();
   const colors = Colors[scheme === "unspecified" ? "light" : scheme];
   const styles = createStyles(colors);
   const [locationName, setLocationName] = React.useState("");
 
   const getLocationList = async () => {
-    const results = await LocationSearch(locationName);
+    const results = await LocationSearchWithNominatim(locationName);
     setSearchResults(results);
   };
 
@@ -77,10 +77,11 @@ export function LocationsModal({
             value={locationName}
             onChange={(e) => setLocationName(e.nativeEvent.text)}
           />
+          <ThemedText type="code">{JSON.stringify(searchResults)}</ThemedText>
           {searchResults.map((result) => {
             return (
               <LocationAddItem
-                key={result.id}
+                key={result.place_id}
                 result={result}
                 clearSearch={clearSearch}
               />

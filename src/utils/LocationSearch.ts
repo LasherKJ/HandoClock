@@ -8,6 +8,17 @@ type SearchResult = {
   };
 };
 
+type NominatimSearchResult = {};
+export async function LocationSearchWithNominatim(
+  placeName: string,
+): Promise<any[]> {
+  const params = encodeURI(`q=${placeName}`);
+  const url = `https://nominatim.openstreetmap.org/search?${params}&format=json`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data ?? [];
+}
+
 export async function LocationSearch(
   placeName: string,
 ): Promise<SearchResult[]> {
@@ -19,8 +30,7 @@ export async function LocationSearch(
       headers: {
         "Content-Type": "application/json",
         "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask":
-          "places.id,places.displayName,places.types,places.timeZone",
+        "X-Goog-FieldMask": "places.id,places.displayName,places.types",
       },
       body: JSON.stringify({
         strictTypeFiltering: true,
