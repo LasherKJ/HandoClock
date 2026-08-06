@@ -1,4 +1,5 @@
 import { Spacing } from "@/constants/theme";
+import { useLocationStore } from "@/hooks/use-location-store";
 import { useTheme } from "@/hooks/use-theme";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { LocationAddTrigger } from "./ui/LocationAddTrigger";
@@ -6,12 +7,20 @@ import { LocationListItem } from "./ui/LocationListItem";
 
 export function LocationsContainer() {
   const scrollBackgroundColor = useTheme().backgroundElement;
+  const savedLocations = useLocationStore((state) => state.locations);
   return (
     <View style={styles.wrapper}>
       <ScrollView
         style={[styles.container, { backgroundColor: scrollBackgroundColor }]}
       >
-        <LocationListItem label="Your Location" />
+        <LocationListItem name="Your Location" />
+        {savedLocations.map((location) => (
+          <LocationListItem
+            key={location.id}
+            {...location}
+            enabled={location.enabled ?? false}
+          />
+        ))}
       </ScrollView>
       <LocationAddTrigger />
     </View>

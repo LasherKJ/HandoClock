@@ -1,12 +1,7 @@
-import { Colors, Spacing } from "@/constants/theme";
+import { Colors } from "@/constants/theme";
 import * as React from "react";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  useColorScheme,
-} from "react-native";
+import { Pressable, StyleSheet, useColorScheme } from "react-native";
+import { LocationsModal } from "../locations-modal";
 import { ThemedText } from "../themed-text";
 
 export function LocationAddTrigger() {
@@ -20,58 +15,16 @@ export function LocationAddTrigger() {
       style={({ pressed }) => [styles.wrapper, pressed && styles.pressed]}
       onPress={() => setVisible(true)}
     >
-      <Modal
-        visible={visible}
-        onRequestClose={() => setVisible(false)}
-        animationType="slide"
-        transparent={true}
-      >
-        <Pressable
-          style={styles.modalWrapper}
-          onPress={() => setVisible(false)}
-        >
-          <Pressable
-            style={styles.modalContainer}
-            onPress={(e) => e.stopPropagation()}
-          >
-            <ThemedText type="subtitle" style={styles.title}>
-              Add a New Location
-            </ThemedText>
-            <TextInput style={styles.input} placeholder="Enter location name" />
-          </Pressable>
-        </Pressable>
-      </Modal>
       <ThemedText type="small" style={styles.text}>
         + Add Location
       </ThemedText>
+      <LocationsModal visible={visible} setVisible={setVisible} />
     </Pressable>
   );
 }
 
 const createStyles = (colors: typeof Colors.light | typeof Colors.dark) =>
   StyleSheet.create({
-    modalWrapper: {
-      flex: 1,
-      justifyContent: "flex-end",
-      alignItems: "center",
-    },
-    modalContainer: {
-      width: "100%",
-      height: "75%",
-      backgroundColor: colors.backgroundElement,
-      borderRadius: Spacing.four,
-      padding: 20,
-      gap: Spacing.three,
-    },
-    title: {
-      textAlign: "center",
-    },
-    input: {
-      padding: Spacing.two,
-      borderRadius: Spacing.two,
-      boxShadow:
-        "-1px -1px 1px rgba(0,0,0,0.25), 1px 1px 1px rgba(100,100,100,0.7)",
-    },
     wrapper: {
       height: 48,
       justifyContent: "center",
