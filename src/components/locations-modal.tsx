@@ -14,13 +14,11 @@ import {
 import { ThemedText } from "./themed-text";
 
 type SearchResult = {
-  id: string;
-  displayName: {
-    text: string;
-  };
-  timeZone?: {
-    id: string;
-  };
+  place_id: string;
+  display_name: string;
+  name: string;
+  lat: string;
+  lon: string;
 };
 
 export function LocationsModal({
@@ -30,7 +28,7 @@ export function LocationsModal({
   visible: boolean;
   setVisible: (visible: boolean) => void;
 }) {
-  const [searchResults, setSearchResults] = React.useState<any[]>([]);
+  const [searchResults, setSearchResults] = React.useState<SearchResult[]>([]);
   const scheme = useColorScheme();
   const colors = Colors[scheme === "unspecified" ? "light" : scheme];
   const styles = createStyles(colors);
