@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import {
   Modal,
   Pressable,
+  ScrollView,
   StyleSheet,
   TextInput,
   useColorScheme,
@@ -77,16 +78,17 @@ export function LocationsModal({
             value={locationName}
             onChange={(e) => setLocationName(e.nativeEvent.text)}
           />
-          <ThemedText type="code">{JSON.stringify(searchResults)}</ThemedText>
-          {searchResults.map((result) => {
-            return (
-              <LocationAddItem
-                key={result.place_id}
-                result={result}
-                clearSearch={clearSearch}
-              />
-            );
-          })}
+          <ScrollView>
+            {searchResults.map((result) => {
+              return (
+                <LocationAddItem
+                  key={result.place_id}
+                  result={result}
+                  clearSearch={clearSearch}
+                />
+              );
+            })}
+          </ScrollView>
         </Pressable>
       </Pressable>
     </Modal>
