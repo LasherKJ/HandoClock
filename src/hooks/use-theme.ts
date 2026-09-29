@@ -7,15 +7,16 @@ import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useSettingsStore } from "./use-settings-store";
 
-export function useTheme() {
+export function useResolvedColorScheme() {
   const scheme = useColorScheme();
   const settingsTheme = useSettingsStore((state) => state.theme);
-  const theme =
-    settingsTheme === "automatic"
-      ? scheme === "dark"
-        ? "dark"
-        : "light"
-      : settingsTheme;
+  return settingsTheme === "automatic"
+    ? scheme === "dark"
+      ? "dark"
+      : "light"
+    : settingsTheme;
+}
 
-  return Colors[theme];
+export function useTheme() {
+  return Colors[useResolvedColorScheme()];
 }

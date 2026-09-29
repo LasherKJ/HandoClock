@@ -11,3 +11,11 @@ export type location = {
   color: string;
   enabled?: boolean;
 };
+
+export type widgetStore = {
+  locations: location[];
+  theme: "light" | "dark";
+
+  setLocations: (locations: location[]) => void;
+  setTheme: (theme: "light" | "dark") => void;
+};

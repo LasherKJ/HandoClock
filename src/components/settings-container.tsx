@@ -1,15 +1,12 @@
 import { Spacing } from "@/constants/theme";
 import { useSettingsStore } from "@/hooks/use-settings-store";
-import * as React from "react";
 import { StyleSheet, Switch, View } from "react-native";
 import { ThemedText } from "./themed-text";
 import { HorizontalRule } from "./ui/HorizontalRule";
 import { RadioOption } from "./ui/RadioOption";
 
 export function SettingsContainer() {
-  const [themeValue, setThemeValue] = React.useState(
-    useSettingsStore((state) => state.theme),
-  );
+  const themeValue = useSettingsStore((state) => state.theme);
   const updateTheme = useSettingsStore((state) => state.setTheme);
   return (
     <View>
@@ -19,7 +16,6 @@ export function SettingsContainer() {
             selected={themeValue === "light"}
             label="Light"
             onPress={() => {
-              setThemeValue("light");
               updateTheme("light");
             }}
           />
@@ -27,7 +23,6 @@ export function SettingsContainer() {
             selected={themeValue === "dark"}
             label="Dark"
             onPress={() => {
-              setThemeValue("dark");
               updateTheme("dark");
             }}
           />
@@ -38,7 +33,6 @@ export function SettingsContainer() {
           <Switch
             value={themeValue === "automatic"}
             onValueChange={(value) => {
-              setThemeValue(value ? "automatic" : "light");
               updateTheme(value ? "automatic" : "light");
             }}
             trackColor={{ true: "#0000FF" }}
