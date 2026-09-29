@@ -7,6 +7,7 @@ import { SettingsContainer } from "@/components/settings-container";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { MaxContentWidth, Spacing } from "@/constants/theme";
+import { loadWidgetConfig, saveWidgetConfig } from "@/services/widget-storage";
 
 function getDevMenuHint() {
   if (Platform.OS === "web") {
@@ -28,6 +29,18 @@ function getDevMenuHint() {
 }
 
 export default function HomeScreen() {
+  const testWidgetStorage = async () => {
+    await saveWidgetConfig(
+      JSON.stringify({
+        test: "hello",
+      }),
+    );
+
+    const result = await loadWidgetConfig();
+
+    console.log("Loaded:", result);
+  };
+  testWidgetStorage();
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
