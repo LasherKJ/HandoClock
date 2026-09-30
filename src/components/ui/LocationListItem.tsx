@@ -1,8 +1,9 @@
 import { Colors, Spacing } from "@/constants/theme";
+import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { getTimeForTimezone } from "@/utils/TimeFormatter";
 import * as React from "react";
 import { useEffect } from "react";
-import { StyleSheet, Switch, View, useColorScheme } from "react-native";
+import { StyleSheet, Switch, View } from "react-native";
 import { ThemedText } from "../themed-text";
 
 type LocationListItemProps = {
@@ -28,10 +29,9 @@ export function LocationListItem({
           hour12: true,
         }),
   );
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === "unspecified" ? "light" : scheme];
-  const styles = createStyles(colors);
+  const colors = useThemeColors();
 
+  const styles = createStyles(colors);
   useEffect(() => {
     const interval = setInterval(() => {
       setCalculatedTime(
@@ -60,6 +60,8 @@ export function LocationListItem({
           style={styles.switch}
           value={derivedEnabled}
           onValueChange={setDerivedEnabled}
+          trackColor={colors.switchTrackColor}
+          ios_backgroundColor={colors.iosSwitchBackgroundColor}
         />
       </View>
     </View>
