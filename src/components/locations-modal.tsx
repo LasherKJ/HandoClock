@@ -1,5 +1,6 @@
 import { LocationAddItem } from "@/components/ui/LocationAddItem";
 import { Colors, Spacing } from "@/constants/theme";
+import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { LocationSearchWithNominatim } from "@/utils/LocationSearch";
 import * as React from "react";
 import { useEffect } from "react";
@@ -9,7 +10,6 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
-  useColorScheme,
 } from "react-native";
 import { ThemedText } from "./themed-text";
 
@@ -29,8 +29,7 @@ export function LocationsModal({
   setVisible: (visible: boolean) => void;
 }) {
   const [searchResults, setSearchResults] = React.useState<SearchResult[]>([]);
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === "unspecified" ? "light" : scheme];
+  const colors = useThemeColors();
   const styles = createStyles(colors);
   const [locationName, setLocationName] = React.useState("");
 

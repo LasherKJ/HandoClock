@@ -1,9 +1,10 @@
 import { Colors } from "@/constants/theme";
 import { useLocationStore } from "@/hooks/use-location-store";
+import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { getTimeForTimezone } from "@/utils/TimeFormatter";
 import * as React from "react";
 import { useEffect } from "react";
-import { Pressable, StyleSheet, useColorScheme } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { ThemedText } from "../themed-text";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const tzLookup = require("tz-lookup") as (lat: string, lon: string) => string;
@@ -25,8 +26,7 @@ export const LocationAddItem = ({
   result,
   clearSearch,
 }: LocationAddItemProps) => {
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === "unspecified" ? "light" : scheme];
+  const colors = useThemeColors();
   const styles = createStyles(colors);
   const addLocation = useLocationStore((state) => state.addLocation);
   const timeZone = tzLookup(result.lat, result.lon);
