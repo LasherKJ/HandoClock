@@ -52,6 +52,7 @@ export function Clock({
         />
       ))}
       <MinuteHand />
+      <ThemedView style={styles.dot} />
     </ThemedView>
   );
 }
@@ -75,5 +76,16 @@ const createStyles = (colors: typeof Colors.light | typeof Colors.dark) =>
       textAlignVertical: "center",
       marginLeft: -12,
       marginTop: -12,
+    },
+    dot: {
+      position: "absolute",
+      width: 6,
+      height: 6,
+      borderRadius: 4,
+      backgroundColor: colors.textSecondary,
+      left: "50%",
+      top: "50%",
+      marginLeft: -3,
+      marginTop: -3,
     },
   });
