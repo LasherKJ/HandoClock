@@ -1,18 +1,26 @@
 import { ThemedView } from "@/components/themed-view";
 import { Spacing } from "@/constants/theme";
+import { useLocationStore } from "@/hooks/use-location-store";
 import { StyleSheet } from "react-native";
 import { Clock } from "./clock";
+import { ClockList } from "./clock-list";
 
 export function PreviewWindow() {
+  const locations = useLocationStore((state) => state.locations);
+  const showCurrentLocation = useLocationStore(
+    (state) => state.showCurrentLocation,
+  );
   return (
     <ThemedView type="backgroundElement" style={styles.container}>
       <ThemedView type="backgroundElement" style={styles.clockContainer}>
-        <Clock />
+        <Clock
+          locations={locations}
+          showCurrentLocation={showCurrentLocation}
+        />
       </ThemedView>
-      <ThemedView
-        type="backgroundElement"
-        style={styles.listContainer}
-      ></ThemedView>
+      <ThemedView type="backgroundElement" style={styles.listContainer}>
+        <ClockList locations={locations} />
+      </ThemedView>
     </ThemedView>
   );
 }
@@ -37,6 +45,5 @@ const styles = StyleSheet.create({
   listContainer: {
     height: "100%",
     flex: 6,
-    backgroundColor: "red",
   },
 });
