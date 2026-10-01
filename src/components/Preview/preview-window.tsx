@@ -1,4 +1,5 @@
 import { ThemedView } from "@/components/themed-view";
+import { Spacing } from "@/constants/theme";
 import { StyleSheet } from "react-native";
 import { Clock } from "./clock";
 
@@ -25,6 +26,8 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     overflow: "hidden",
     flexDirection: "row",
+    padding: Spacing.one,
+    gap: Spacing.one,
   },
   clockContainer: {
     flex: 5,
@@ -34,5 +37,6 @@ const styles = StyleSheet.create({
   listContainer: {
     height: "100%",
     flex: 6,
+    backgroundColor: "red",
   },
 });

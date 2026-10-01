@@ -1,9 +1,15 @@
 import { ThemedView } from "@/components/themed-view";
+import { Colors } from "@/constants/theme";
+import { useLocationStore } from "@/hooks/use-location-store";
+import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { StyleSheet, Text } from "react-native";
 
 const numbers = Array.from({ length: 12 }, (_, i) => i + 1);
 
 export function Clock() {
+  const colors = useThemeColors();
+  const styles = createStyles(colors);
+  const locations = useLocationStore((state) => state.locations);
   return (
     <ThemedView style={styles.face}>
       {numbers.map((number) => {
@@ -15,8 +21,8 @@ export function Clock() {
             style={[
               styles.number,
               {
-                left: `${50 + 42 * Math.sin(angle)}%`,
-                top: `${50 - 42 * Math.cos(angle)}%`,
+                left: `${50 + 40 * Math.sin(angle)}%`,
+                top: `${50 - 40 * Math.cos(angle)}%`,
               },
             ]}
           >
@@ -28,18 +34,23 @@ export function Clock() {
   );
 }
 
-const styles = StyleSheet.create({
-  face: {
-    borderWidth: 1,
-    justifyContent: "center",
-    alignSelf: "center",
-    borderRadius: 10000,
-    aspectRatio: 1,
-    width: "100%",
-  },
-  number: {
-    color: "white",
-    position: "absolute",
-    transform: [{ translateX: -5 }, { translateY: -10 }],
-  },
-});
+const createStyles = (colors: typeof Colors.light | typeof Colors.dark) =>
+  StyleSheet.create({
+    face: {
+      justifyContent: "center",
+      alignSelf: "center",
+      borderRadius: 10000,
+      aspectRatio: 1,
+      width: "100%",
+    },
+    number: {
+      color: colors.textSecondary,
+      position: "absolute",
+      width: 24,
+      height: 24,
+      textAlign: "center",
+      textAlignVertical: "center",
+      marginLeft: -12,
+      marginTop: -12,
+    },
+  });
