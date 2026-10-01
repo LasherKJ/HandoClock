@@ -1,4 +1,4 @@
-import { useTheme } from "@/hooks/use-theme";
+import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { SymbolView } from "expo-symbols";
 import { Pressable, StyleSheet } from "react-native";
 import { ThemedText } from "../themed-text";
@@ -10,15 +10,16 @@ export type RadioOptionProps = {
 };
 
 export function RadioOption({ selected, label, onPress }: RadioOptionProps) {
-  const theme = useTheme();
-  const defaultColor = theme.textSecondary;
+  const colors = useThemeColors();
+  const defaultColor = colors.textSecondary;
+  const selectedColor = colors.switchTrackColor.true;
   return (
     <Pressable onPress={onPress} style={styles.row}>
       <ThemedText type="smallBold">{label}</ThemedText>
       <SymbolView
         name={{ ios: selected ? "checkmark.circle.fill" : "circle" }}
         size={20}
-        tintColor={selected ? "#0000FF" : defaultColor}
+        tintColor={selected ? selectedColor : defaultColor}
       />
     </Pressable>
   );
@@ -35,9 +36,5 @@ const styles = StyleSheet.create({
     height: 16,
     borderRadius: 8,
     borderWidth: 2,
-  },
-  selected: {
-    borderColor: "blue",
-    backgroundColor: "blue",
   },
 });

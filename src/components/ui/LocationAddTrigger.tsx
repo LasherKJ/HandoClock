@@ -1,12 +1,12 @@
 import { Colors } from "@/constants/theme";
+import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import * as React from "react";
-import { Pressable, StyleSheet, useColorScheme } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { LocationsModal } from "../locations-modal";
 import { ThemedText } from "../themed-text";
 
 export function LocationAddTrigger() {
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === "unspecified" ? "light" : scheme];
+  const colors = useThemeColors();
   const styles = createStyles(colors);
   const [visible, setVisible] = React.useState(false);
 

@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { LocationsContainer } from "@/components/locations-container";
+import { PreviewWindow } from "@/components/Preview/preview-window";
 import { SettingsContainer } from "@/components/settings-container";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -26,12 +27,7 @@ export default function HomeScreen() {
           <SettingsContainer />
           <LocationsContainer />
         </ThemedView>
-        <ThemedView type="backgroundElement" style={styles.previewContainer}>
-          <ThemedView
-            type="backgroundElement"
-            style={styles.widgetPreview}
-          ></ThemedView>
-        </ThemedView>
+        <PreviewWindow />
       </SafeAreaView>
     </ThemedView>
   );
@@ -80,16 +76,5 @@ const styles = StyleSheet.create({
         color: "rgba(100, 100, 100, 0.7)",
       },
     ],
-  },
-  previewContainer: {
-    alignItems: "center",
-  },
-  widgetPreview: {
-    backgroundColor: "red",
-    width: "100%",
-    maxWidth: 380,
-    aspectRatio: 1.9,
-    borderRadius: 28,
-    overflow: "hidden",
   },
 });

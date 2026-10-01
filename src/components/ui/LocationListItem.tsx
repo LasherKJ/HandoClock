@@ -1,11 +1,14 @@
 import { Colors, Spacing } from "@/constants/theme";
+import { useLocationStore } from "@/hooks/use-location-store";
+import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { getTimeForTimezone } from "@/utils/TimeFormatter";
 import * as React from "react";
 import { useEffect } from "react";
-import { StyleSheet, Switch, View, useColorScheme } from "react-native";
+import { StyleSheet, Switch, View } from "react-native";
 import { ThemedText } from "../themed-text";
 
 type LocationListItemProps = {
+  id: string;
   name?: string;
   offset?: string;
   enabled?: boolean;
@@ -14,11 +17,12 @@ type LocationListItemProps = {
 };
 export function LocationListItem({
   name = "somewhere fun",
+  id,
   enabled,
   timeZone,
   color,
 }: LocationListItemProps) {
-  const [derivedEnabled, setDerivedEnabled] = React.useState(enabled ?? false);
+  const derivedEnabled = enabled ?? false;
   const [calculatedTime, setCalculatedTime] = React.useState<string>(
     timeZone
       ? getTimeForTimezone(timeZone, "en-US")
@@ -28,10 +32,10 @@ export function LocationListItem({
           hour12: true,
         }),
   );
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === "unspecified" ? "light" : scheme];
-  const styles = createStyles(colors);
+  const updateLocation = useLocationStore((state) => state.updateLocation);
+  const colors = useThemeColors();
 
+  const styles = createStyles(colors);
   useEffect(() => {
     const interval = setInterval(() => {
       setCalculatedTime(
@@ -47,6 +51,24 @@ export function LocationListItem({
     return () => clearInterval(interval);
   }, [timeZone]);
 
+  const toggleShowCurrentLocation = useLocationStore(
+    (state) => state.toggleShowCurrentLocation,
+  );
+
+  const toggleEnabled = () => {
+    if (id === "user-location") {
+      toggleShowCurrentLocation();
+    } else {
+      updateLocation({
+        id: id,
+        name,
+        timeZone,
+        color,
+        enabled: !enabled,
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ThemedText style={styles.label} type="smallBold">
@@ -59,7 +81,9 @@ export function LocationListItem({
         <Switch
           style={styles.switch}
           value={derivedEnabled}
-          onValueChange={setDerivedEnabled}
+          onValueChange={() => toggleEnabled()}
+          trackColor={colors.switchTrackColor}
+          ios_backgroundColor={colors.iosSwitchBackgroundColor}
         />
       </View>
     </View>

@@ -13,7 +13,12 @@ export function LocationsContainer() {
       <ScrollView
         style={[styles.container, { backgroundColor: scrollBackgroundColor }]}
       >
-        <LocationListItem name="Your Location" />
+        <LocationListItem
+          name="Your Location"
+          key={"user-location"}
+          id={"user-location"}
+          enabled={useLocationStore((state) => state.showCurrentLocation)}
+        />
         {savedLocations.map((location) => (
           <LocationListItem
             key={location.id}

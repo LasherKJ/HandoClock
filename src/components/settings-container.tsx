@@ -1,4 +1,5 @@
-import { Spacing } from "@/constants/theme";
+import { Colors, Spacing } from "@/constants/theme";
+import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { useSettingsStore } from "@/hooks/use-settings-store";
 import { StyleSheet, Switch, View } from "react-native";
 import { ThemedText } from "./themed-text";
@@ -8,6 +9,8 @@ import { RadioOption } from "./ui/RadioOption";
 export function SettingsContainer() {
   const themeValue = useSettingsStore((state) => state.theme);
   const updateTheme = useSettingsStore((state) => state.setTheme);
+  const colors = useThemeColors();
+  const styles = createStyles(colors);
   return (
     <View>
       <View style={styles.inputContainer}>
@@ -35,7 +38,8 @@ export function SettingsContainer() {
             onValueChange={(value) => {
               updateTheme(value ? "automatic" : "light");
             }}
-            trackColor={{ true: "#0000FF" }}
+            trackColor={colors.switchTrackColor}
+            ios_backgroundColor={colors.iosSwitchBackgroundColor}
           />
         </View>
       </View>
@@ -43,26 +47,27 @@ export function SettingsContainer() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    gap: Spacing.three,
-    alignSelf: "stretch",
-    paddingHorizontal: Spacing.five,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-  inputContainer: {
-    gap: Spacing.two,
-    flexDirection: "column",
-  },
-  radioButtonGroup: {
-    justifyContent: "space-around",
-    flexDirection: "row",
-  },
-  toggleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.four,
-  },
-});
+const createStyles = (colors: typeof Colors.light | typeof Colors.dark) =>
+  StyleSheet.create({
+    container: {
+      gap: Spacing.three,
+      alignSelf: "stretch",
+      paddingHorizontal: Spacing.five,
+      paddingVertical: Spacing.four,
+      borderRadius: Spacing.four,
+    },
+    inputContainer: {
+      gap: Spacing.two,
+      flexDirection: "column",
+    },
+    radioButtonGroup: {
+      justifyContent: "space-around",
+      flexDirection: "row",
+    },
+    toggleContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: Spacing.four,
+    },
+  });

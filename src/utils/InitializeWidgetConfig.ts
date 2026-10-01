@@ -15,6 +15,11 @@ export async function initializeWidgetConfig() {
   if (widgetConfig.locations) {
     locTest = widgetConfig.locations;
     useLocationStore.setState({ locations: widgetConfig.locations });
+    if (widgetConfig.showCurrentLocation !== undefined) {
+      useLocationStore.setState({
+        showCurrentLocation: widgetConfig.showCurrentLocation,
+      });
+    }
   }
   let themeTest = null;
   if (widgetConfig.theme) {
@@ -33,11 +38,13 @@ export async function initializeWidgetConfig() {
 export async function syncWidget() {
   const locations = useLocationStore.getState().locations;
   const theme = useSettingsStore.getState().theme;
+  const showCurrentLocation = useLocationStore.getState().showCurrentLocation;
 
   await saveWidget({
     version: 1,
     locations,
     theme: theme,
+    showCurrentLocation,
   });
 
   await reloadWidget();
