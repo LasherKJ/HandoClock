@@ -2,10 +2,10 @@ import { Colors } from "@/constants/theme";
 import { useLocationStore } from "@/hooks/use-location-store";
 import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { getTimeForTimezone } from "@/utils/TimeFormatter";
-import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { ThemedText } from "../themed-text";
+import { ColorPickerModal } from "./color-picker/ColorPickerModal";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const tzLookup = require("tz-lookup") as (lat: string, lon: string) => string;
 
@@ -30,8 +30,9 @@ export const LocationAddItem = ({
   const styles = createStyles(colors);
   const addLocation = useLocationStore((state) => state.addLocation);
   const timeZone = tzLookup(result.lat, result.lon);
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
-  const [calculatedTime, setCalculatedTime] = React.useState<string>(
+  const [calculatedTime, setCalculatedTime] = useState<string>(
     getTimeForTimezone(timeZone, "en-US"),
   );
 
@@ -43,14 +44,7 @@ export const LocationAddItem = ({
   }, [timeZone]);
 
   const handlePress = () => {
-    addLocation({
-      id: result.place_id,
-      name: result.name,
-      timeZone: timeZone,
-      color: "red",
-      enabled: true,
-    });
-    clearSearch();
+    setColorPickerVisible(true);
   };
   return (
     <Pressable
@@ -65,6 +59,12 @@ export const LocationAddItem = ({
         {result.display_name}
       </ThemedText>
       <ThemedText type="small">{calculatedTime}</ThemedText>
+      <ColorPickerModal
+        visible={colorPickerVisible}
+        onClose={() => setColorPickerVisible(false)}
+        location={{ ...result, timeZone }}
+        clearSearch={clearSearch}
+      />
     </Pressable>
   );
 };
