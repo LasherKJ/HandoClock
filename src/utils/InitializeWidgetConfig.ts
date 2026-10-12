@@ -8,21 +8,23 @@ import {
 
 export async function initializeWidgetConfig() {
   const widgetConfig = await loadWidget();
-  if (!widgetConfig) {
-    return null;
-  }
-  let locTest = null;
-  if (widgetConfig.locations) {
-    locTest = widgetConfig.locations;
-    useLocationStore.setState({ locations: widgetConfig.locations });
+  if (widgetConfig?.locations) {
+    let locations = null;
+    locations = widgetConfig.locations;
+    let currentLocationToggle: boolean | undefined;
     if (widgetConfig.showCurrentLocation !== undefined) {
-      useLocationStore.setState({
-        showCurrentLocation: widgetConfig.showCurrentLocation,
-      });
+      currentLocationToggle = widgetConfig.showCurrentLocation;
+      if (widgetConfig.locations.length === 0 || !widgetConfig.locations) {
+        currentLocationToggle = true;
+      }
     }
+    useLocationStore.setState({
+      locations: locations,
+      showCurrentLocation: currentLocationToggle,
+    });
   }
   let themeTest = null;
-  if (widgetConfig.theme) {
+  if (widgetConfig?.theme) {
     themeTest = widgetConfig.theme;
     useSettingsStore.setState({ theme: widgetConfig.theme });
   }

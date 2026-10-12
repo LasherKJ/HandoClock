@@ -36,6 +36,22 @@ export const LocationAddItem = ({
     getTimeForTimezone(timeZone, "en-US"),
   );
 
+  const handleAddLocation = (color: string) => {
+    setColorPickerVisible(false);
+    addLocation({
+      id: result.place_id,
+      name: result.name,
+      timeZone: timeZone,
+      color: color,
+      enabled: true,
+    });
+    clearSearch();
+  };
+
+  const handleClose = () => {
+    setColorPickerVisible(false);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCalculatedTime(getTimeForTimezone(timeZone, "en-US"));
@@ -61,9 +77,9 @@ export const LocationAddItem = ({
       <ThemedText type="small">{calculatedTime}</ThemedText>
       <ColorPickerModal
         visible={colorPickerVisible}
-        onClose={() => setColorPickerVisible(false)}
+        handleAddLocation={handleAddLocation}
+        onClose={handleClose}
         location={{ ...result, timeZone }}
-        clearSearch={clearSearch}
       />
     </Pressable>
   );
