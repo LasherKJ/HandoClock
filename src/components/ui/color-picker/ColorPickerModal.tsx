@@ -33,12 +33,13 @@ export const ColorPickerModal = ({
   handleAddLocation,
 }: {
   visible: boolean;
-  location: result;
+  location: result | null;
   onClose: () => void;
   handleAddLocation: (color: string) => void;
 }) => {
   const colors = useThemeColors();
   const styles = createStyles(colors);
+
   return (
     <Modal
       visible={visible}

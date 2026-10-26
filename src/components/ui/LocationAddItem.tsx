@@ -1,11 +1,9 @@
 import { Colors } from "@/constants/theme";
-import { useLocationStore } from "@/hooks/use-location-store";
 import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { getTimeForTimezone } from "@/utils/TimeFormatter";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { ThemedText } from "../themed-text";
-import { ColorPickerModal } from "./color-picker/ColorPickerModal";
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const tzLookup = require("tz-lookup") as (lat: string, lon: string) => string;
 
@@ -17,40 +15,33 @@ type result = {
   lon: string;
 };
 
+type location = {
+  place_id: string;
+  display_name: string;
+  timeZone: string;
+  name: string;
+  lat: string;
+  lon: string;
+};
+
 type LocationAddItemProps = {
   result: result;
   clearSearch: () => void;
+  setSelectedLocation: (location: location) => void;
 };
 
 export const LocationAddItem = ({
   result,
   clearSearch,
+  setSelectedLocation,
 }: LocationAddItemProps) => {
   const colors = useThemeColors();
   const styles = createStyles(colors);
-  const addLocation = useLocationStore((state) => state.addLocation);
   const timeZone = tzLookup(result.lat, result.lon);
-  const [colorPickerVisible, setColorPickerVisible] = useState(false);
 
   const [calculatedTime, setCalculatedTime] = useState<string>(
     getTimeForTimezone(timeZone, "en-US"),
   );
-
-  const handleAddLocation = (color: string) => {
-    setColorPickerVisible(false);
-    addLocation({
-      id: result.place_id,
-      name: result.name,
-      timeZone: timeZone,
-      color: color,
-      enabled: true,
-    });
-    clearSearch();
-  };
-
-  const handleClose = () => {
-    setColorPickerVisible(false);
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -60,7 +51,14 @@ export const LocationAddItem = ({
   }, [timeZone]);
 
   const handlePress = () => {
-    setColorPickerVisible(true);
+    setSelectedLocation({
+      place_id: result.place_id,
+      display_name: result.name,
+      timeZone: timeZone,
+      name: result.name,
+      lat: result.lat,
+      lon: result.lon,
+    });
   };
   return (
     <Pressable
@@ -75,12 +73,6 @@ export const LocationAddItem = ({
         {result.display_name}
       </ThemedText>
       <ThemedText type="small">{calculatedTime}</ThemedText>
-      <ColorPickerModal
-        visible={colorPickerVisible}
-        handleAddLocation={handleAddLocation}
-        onClose={handleClose}
-        location={{ ...result, timeZone }}
-      />
     </Pressable>
   );
 };

@@ -1,24 +1,67 @@
 import { Colors } from "@/constants/theme";
+import { useLocationStore } from "@/hooks/use-location-store";
 import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
-import * as React from "react";
+import { useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { LocationsModal } from "../locations-modal";
 import { ThemedText } from "../themed-text";
+import { ColorPickerModal } from "./color-picker/ColorPickerModal";
+
+type location = {
+  place_id: string;
+  display_name: string;
+  timeZone: string;
+  name: string;
+  lat: string;
+  lon: string;
+};
 
 export function LocationAddTrigger() {
   const colors = useThemeColors();
   const styles = createStyles(colors);
-  const [visible, setVisible] = React.useState(false);
+  const [locationVisible, setLocationVisible] = useState(false);
+  const [colorPickerVisible, setColorPickerVisible] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState<location | null>(null);
+  const addLocation = useLocationStore((state) => state.addLocation);
+
+  const handleSelectLocation = (location: location) => {
+    setSelectedLocation(location);
+    setColorPickerVisible(true);
+    setLocationVisible(false);
+  }
+  const handleAddLocation = (color: string) => {
+    setColorPickerVisible(false);
+    if (selectedLocation) {
+      addLocation({
+        id: selectedLocation.place_id,
+        name: selectedLocation.name,
+        timeZone: selectedLocation.timeZone,
+        color: color,
+        enabled: true,
+      });
+    setLocationVisible(false);
+  }
+}
 
   return (
     <Pressable
       style={({ pressed }) => [styles.wrapper, pressed && styles.pressed]}
-      onPress={() => setVisible(true)}
+      onPress={() => setLocationVisible(true)}
     >
+      <ColorPickerModal 
+        visible={colorPickerVisible}
+        location={selectedLocation} 
+        onClose={() => setColorPickerVisible(false)} 
+        handleAddLocation={handleAddLocation}
+      />
       <ThemedText type="small" style={styles.text}>
         + Add Location
       </ThemedText>
-      <LocationsModal visible={visible} setVisible={setVisible} />
+      <LocationsModal 
+        visible={locationVisible} 
+        setVisible={setLocationVisible}
+        setSelectedLocation={handleSelectLocation}
+      />
     </Pressable>
   );
 }
