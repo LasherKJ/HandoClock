@@ -50,7 +50,6 @@ export function LocationAddTrigger() {
     >
       <ColorPickerModal 
         visible={colorPickerVisible}
-        location={selectedLocation} 
         onClose={() => setColorPickerVisible(false)} 
         handleAddLocation={handleAddLocation}
       />

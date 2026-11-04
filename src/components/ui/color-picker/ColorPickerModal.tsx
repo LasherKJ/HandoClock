@@ -28,12 +28,10 @@ type result = {
 
 export const ColorPickerModal = ({
   visible,
-  location,
   onClose,
   handleAddLocation,
 }: {
   visible: boolean;
-  location: result | null;
   onClose: () => void;
   handleAddLocation: (color: string) => void;
 }) => {

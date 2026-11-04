@@ -4,7 +4,7 @@ import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { getTimeForTimezone } from "@/utils/TimeFormatter";
 import * as React from "react";
 import { useEffect } from "react";
-import { StyleSheet, Switch, View } from "react-native";
+import { Pressable, StyleSheet, Switch, View } from "react-native";
 import { ThemedText } from "../themed-text";
 
 type LocationListItemProps = {
@@ -14,6 +14,7 @@ type LocationListItemProps = {
   enabled?: boolean;
   color?: string;
   timeZone?: string;
+  handleLongPress: (key: string) => void;
 };
 export function LocationListItem({
   name = "somewhere fun",
@@ -21,6 +22,7 @@ export function LocationListItem({
   enabled,
   timeZone,
   color,
+  handleLongPress,
 }: LocationListItemProps) {
   const derivedEnabled = enabled ?? false;
   const [calculatedTime, setCalculatedTime] = React.useState<string>(
@@ -70,7 +72,7 @@ export function LocationListItem({
   };
 
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onLongPress={() => handleLongPress(id)}>
       <ThemedText style={styles.label} type="smallBold">
         {name}
       </ThemedText>
@@ -86,7 +88,7 @@ export function LocationListItem({
           ios_backgroundColor={colors.iosSwitchBackgroundColor}
         />
       </View>
-    </View>
+    </Pressable>
   );
 }
 

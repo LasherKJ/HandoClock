@@ -1,15 +1,30 @@
 import { Spacing } from "@/constants/theme";
 import { useLocationStore } from "@/hooks/use-location-store";
 import { useTheme } from "@/hooks/use-theme";
+import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { EditModal } from "./ui/EditModal";
 import { LocationAddTrigger } from "./ui/LocationAddTrigger";
 import { LocationListItem } from "./ui/LocationListItem";
 
 export function LocationsContainer() {
   const scrollBackgroundColor = useTheme().backgroundElement;
   const savedLocations = useLocationStore((state) => state.locations);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [locationToEdit, setLocationToEdit] = useState<string | null>(null);
+
+  const handleLongPress = (key: string) => {
+    setLocationToEdit(key);
+    setEditModalVisible(true);
+  };
+
   return (
     <View style={styles.wrapper}>
+      <EditModal
+        visible={editModalVisible}
+        setVisible={setEditModalVisible}
+        locationId={locationToEdit}
+      />
       <ScrollView
         style={[styles.container, { backgroundColor: scrollBackgroundColor }]}
       >
@@ -18,12 +33,14 @@ export function LocationsContainer() {
           key={"user-location"}
           id={"user-location"}
           enabled={useLocationStore((state) => state.showCurrentLocation)}
+          handleLongPress={handleLongPress}
         />
         {savedLocations.map((location) => (
           <LocationListItem
             key={location.id}
             {...location}
             enabled={location.enabled ?? false}
+            handleLongPress={handleLongPress}
           />
         ))}
       </ScrollView>
