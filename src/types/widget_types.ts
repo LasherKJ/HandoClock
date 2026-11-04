@@ -16,7 +16,7 @@ export type location = {
 export type widgetStore = {
   locations: location[];
   theme: "light" | "dark";
-  showCurrentLocation: boolean;
+  showCurrentLocation: boolean | null;
   setLocations: (locations: location[]) => void;
   setTheme: (theme: "light" | "dark") => void;
   setShowCurrentLocation: (show: boolean) => void;

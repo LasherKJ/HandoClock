@@ -1,5 +1,4 @@
 import { ThemedText } from "@/components/themed-text";
-import { useLocationStore } from "@/hooks/use-location-store";
 import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { Modal, Pressable, StyleSheet, View } from "react-native";
 
@@ -31,28 +30,16 @@ export const ColorPickerModal = ({
   visible,
   location,
   onClose,
-  clearSearch,
+  handleAddLocation,
 }: {
   visible: boolean;
-  location: result;
+  location: result | null;
   onClose: () => void;
-  clearSearch: () => void;
+  handleAddLocation: (color: string) => void;
 }) => {
   const colors = useThemeColors();
   const styles = createStyles(colors);
-  const addLocation = useLocationStore((state) => state.addLocation);
-  const handlePress = (color: string) => {
-    alert(location);
-    addLocation({
-      id: location.place_id,
-      name: location.name,
-      timeZone: location.timeZone,
-      color: color,
-      enabled: true,
-    });
-    clearSearch();
-    onClose();
-  };
+
   return (
     <Modal
       visible={visible}
@@ -68,7 +55,7 @@ export const ColorPickerModal = ({
               <Pressable
                 key={color}
                 style={[styles.dot, { backgroundColor: color }]}
-                onPress={() => handlePress(color)}
+                onPress={() => handleAddLocation(color)}
               />
             ))}
           </View>

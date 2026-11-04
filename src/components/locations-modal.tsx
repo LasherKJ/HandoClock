@@ -21,12 +21,23 @@ type SearchResult = {
   lon: string;
 };
 
+type location = {
+  place_id: string;
+  display_name: string;
+  timeZone: string;
+  name: string;
+  lat: string;
+  lon: string;
+};
+
 export function LocationsModal({
   visible,
   setVisible,
+  setSelectedLocation,
 }: {
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  setSelectedLocation: (location: location) => void;
 }) {
   const [searchResults, setSearchResults] = React.useState<SearchResult[]>([]);
   const colors = useThemeColors();
@@ -82,6 +93,7 @@ export function LocationsModal({
                   key={result.place_id}
                   result={result}
                   clearSearch={clearSearch}
+                  setSelectedLocation={setSelectedLocation}
                 />
               );
             })}
