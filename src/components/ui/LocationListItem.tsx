@@ -12,7 +12,7 @@ type LocationListItemProps = {
   name?: string;
   offset?: string;
   enabled?: boolean;
-  color?: string;
+  color?: number;
   timeZone?: string;
   handleLongPress: (key: string) => void;
 };

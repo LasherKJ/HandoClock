@@ -1,3 +1,4 @@
+import { ColorArray } from "@/constants/colorArray";
 import { useLocationStore } from "@/hooks/use-location-store";
 import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { Modal, Pressable, StyleSheet } from "react-native";
@@ -7,10 +8,12 @@ export function EditModal({
   visible,
   setVisible,
   locationId,
+  handleDeleteLocation,
 }: {
   visible: boolean;
   setVisible: (visible: boolean) => void;
   locationId?: string | null;
+  handleDeleteLocation: (id: string) => void;
 }) {
     const colors = useThemeColors();
     const styles = createStyles(colors);
@@ -29,9 +32,18 @@ export function EditModal({
             <>
               <ThemedText>Name: {location.name}</ThemedText>
               <ThemedText>Time Zone: {location.timeZone}</ThemedText>
-              <ThemedText>Color: {location.color}</ThemedText>
+              <ThemedText>Color: {location.color !== undefined ? ColorArray[location.color] : "Not specified"}</ThemedText>
             </>
           )}
+          <Pressable onPress={() => {
+            if (locationId) {
+              handleDeleteLocation(locationId);
+            }
+          }}>
+            <ThemedText>
+              Delete  
+            </ThemedText>
+          </Pressable>
         </Pressable>
       </Pressable>
     </Modal>

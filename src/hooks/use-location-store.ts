@@ -4,7 +4,7 @@ type locationObject = {
   id: string;
   name: string;
   timeZone?: string;
-  color?: string;
+  color?: number;
   enabled?: boolean;
 };
 

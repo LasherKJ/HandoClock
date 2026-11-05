@@ -1,3 +1,4 @@
+import { ColorArray } from "@/constants/colorArray";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
@@ -6,7 +7,7 @@ export function HourHand({
   color,
 }: {
   timeZone?: string;
-  color?: string;
+  color?: number;
 }) {
   const styles = createStyles(color);
   const getClockDegrees = (timeZone?: string) => {
@@ -64,7 +65,7 @@ export function HourHand({
   );
 }
 
-const createStyles = (color?: string) =>
+const createStyles = (color?: number) =>
   StyleSheet.create({
     container: {
       position: "absolute",
@@ -75,7 +76,7 @@ const createStyles = (color?: string) =>
       position: "absolute",
       width: 2,
       height: "27%",
-      backgroundColor: color ?? "red",
+      backgroundColor: color !== undefined ? ColorArray[color] : "red",
       left: "50%",
       bottom: "50%",
       transformOrigin: "bottom",

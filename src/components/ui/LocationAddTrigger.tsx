@@ -29,7 +29,7 @@ export function LocationAddTrigger() {
     setColorPickerVisible(true);
     setLocationVisible(false);
   }
-  const handleAddLocation = (color: string) => {
+  const handleAddLocation = (color: number) => {
     setColorPickerVisible(false);
     if (selectedLocation) {
       addLocation({

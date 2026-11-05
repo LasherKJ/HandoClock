@@ -18,12 +18,18 @@ export function LocationsContainer() {
     setEditModalVisible(true);
   };
 
+  const handleDeleteLocation = (id: string) => {
+    useLocationStore.getState().removeLocation(id);
+    setEditModalVisible(false);
+  };
+
   return (
     <View style={styles.wrapper}>
       <EditModal
         visible={editModalVisible}
         setVisible={setEditModalVisible}
         locationId={locationToEdit}
+        handleDeleteLocation={handleDeleteLocation}
       />
       <ScrollView
         style={[styles.container, { backgroundColor: scrollBackgroundColor }]}
