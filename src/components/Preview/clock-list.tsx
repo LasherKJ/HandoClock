@@ -1,3 +1,4 @@
+import { ColorArray } from "@/constants/colorArray";
 import { Colors, Spacing } from "@/constants/theme";
 import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { StyleSheet, View } from "react-native";
@@ -7,7 +8,7 @@ type LocationObject = {
   id: string;
   name: string;
   timeZone?: string;
-  color?: string;
+  color?: number;
   enabled?: boolean;
 };
 export function ClockList({ locations }: { locations: LocationObject[] }) {
@@ -16,18 +17,20 @@ export function ClockList({ locations }: { locations: LocationObject[] }) {
   return (
     <ThemedView style={styles.listContainer}>
       <ThemedView style={styles.listShim}>
-        {locations.map((location) => (
-          <View style={styles.row} key={location.id}>
-            <ThemedText
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={styles.text}
-            >
-              {location.name}
-            </ThemedText>
-            <View style={styles.dot}></View>
-          </View>
-        ))}
+        {locations.map((location) =>
+          location.enabled && (
+            <View style={styles.row} key={location.id}>
+              <ThemedText
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={styles.text}
+              >
+                {location.name}
+              </ThemedText>
+              <View style={[styles.dot, { backgroundColor: location.color !== undefined ? ColorArray[location.color] : "gray" }]}></View>
+            </View>
+          )
+        )}
       </ThemedView>
     </ThemedView>
   );

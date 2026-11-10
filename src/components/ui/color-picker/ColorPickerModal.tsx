@@ -1,21 +1,7 @@
 import { ThemedText } from "@/components/themed-text";
+import { ColorArray } from "@/constants/colorArray";
 import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
 import { Modal, Pressable, StyleSheet, View } from "react-native";
-
-const ColorArray = [
-  "#E63946", // Red
-  "#F77F00", // Orange
-  "#F2C14E", // Gold
-  "#2A9D8F", // Teal
-  "#00A896", // Emerald
-  "#2D7DD2", // Blue
-  "#4361EE", // Indigo
-  "#7209B7", // Purple
-  "#B5179E", // Magenta
-  "#D62828", // Crimson
-  "#6A994E", // Green
-  "#9C6644", // Brown
-];
 
 type result = {
   place_id: string;
@@ -28,14 +14,12 @@ type result = {
 
 export const ColorPickerModal = ({
   visible,
-  location,
   onClose,
   handleAddLocation,
 }: {
   visible: boolean;
-  location: result | null;
   onClose: () => void;
-  handleAddLocation: (color: string) => void;
+  handleAddLocation: (color: number) => void;
 }) => {
   const colors = useThemeColors();
   const styles = createStyles(colors);
@@ -51,11 +35,11 @@ export const ColorPickerModal = ({
         <Pressable style={styles.modal} onPress={(e) => e.stopPropagation()}>
           <ThemedText>Select a color</ThemedText>
           <View style={styles.colorGrid}>
-            {ColorArray.map((color) => (
+            {ColorArray.map((color, i) => (
               <Pressable
                 key={color}
                 style={[styles.dot, { backgroundColor: color }]}
-                onPress={() => handleAddLocation(color)}
+                onPress={() => handleAddLocation(i)}
               />
             ))}
           </View>

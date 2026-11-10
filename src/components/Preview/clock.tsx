@@ -10,7 +10,7 @@ type LocationObject = {
   id: string;
   name: string;
   timeZone?: string;
-  color?: string;
+  color?: number;
   enabled?: boolean;
 };
 
@@ -23,7 +23,6 @@ export function Clock({
 }) {
   const colors = useThemeColors();
   const styles = createStyles(colors);
-  const placeHolderColors = ["purple", "blue", "green", "yellow", "teal"];
   return (
     <ThemedView style={styles.face}>
       {numbers.map((number) => {
@@ -44,13 +43,15 @@ export function Clock({
         );
       })}
       {showCurrentLocation && <HourHand />}
-      {Object.values(locations).map((hand, index) => (
-        <HourHand
-          key={hand.id}
-          timeZone={hand.timeZone}
-          color={placeHolderColors[index % placeHolderColors.length]}
-        />
-      ))}
+      {Object.values(locations).map((hand, index) => 
+        hand.enabled && (
+          <HourHand
+            key={hand.id}
+            timeZone={hand.timeZone}
+            color={hand.color}
+          />
+         )
+      )}
       <MinuteHand />
     </ThemedView>
   );
