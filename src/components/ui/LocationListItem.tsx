@@ -1,3 +1,4 @@
+import { ColorArray } from "@/constants/colorArray";
 import { Colors, Spacing } from "@/constants/theme";
 import { useLocationStore } from "@/hooks/use-location-store";
 import { useThemeColors } from "@/hooks/use-resolved-color-scheme";
@@ -70,7 +71,8 @@ export function LocationListItem({
       });
     }
   };
-
+  
+  const renderedColor = () => color !== undefined ? {true: ColorArray[color]} : colors.switchTrackColor;
   return (
     <Pressable style={styles.container} onLongPress={() => handleLongPress(id)}>
       <ThemedText style={styles.label} type="smallBold">
@@ -84,7 +86,7 @@ export function LocationListItem({
           style={styles.switch}
           value={derivedEnabled}
           onValueChange={() => toggleEnabled()}
-          trackColor={colors.switchTrackColor}
+          trackColor={renderedColor()}
           ios_backgroundColor={colors.iosSwitchBackgroundColor}
         />
       </View>

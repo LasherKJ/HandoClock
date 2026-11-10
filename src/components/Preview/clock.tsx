@@ -43,13 +43,15 @@ export function Clock({
         );
       })}
       {showCurrentLocation && <HourHand />}
-      {Object.values(locations).map((hand, index) => (
-        <HourHand
-          key={hand.id}
-          timeZone={hand.timeZone}
-          color={hand.color}
-        />
-      ))}
+      {Object.values(locations).map((hand, index) => 
+        hand.enabled && (
+          <HourHand
+            key={hand.id}
+            timeZone={hand.timeZone}
+            color={hand.color}
+          />
+         )
+      )}
       <MinuteHand />
     </ThemedView>
   );

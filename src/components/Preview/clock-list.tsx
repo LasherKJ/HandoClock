@@ -17,18 +17,20 @@ export function ClockList({ locations }: { locations: LocationObject[] }) {
   return (
     <ThemedView style={styles.listContainer}>
       <ThemedView style={styles.listShim}>
-        {locations.map((location) => (
-          <View style={styles.row} key={location.id}>
-            <ThemedText
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={styles.text}
-            >
-              {location.name}
-            </ThemedText>
-            <View style={[styles.dot, { backgroundColor: location.color !== undefined ? ColorArray[location.color] : "gray" }]}></View>
-          </View>
-        ))}
+        {locations.map((location) =>
+          location.enabled && (
+            <View style={styles.row} key={location.id}>
+              <ThemedText
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={styles.text}
+              >
+                {location.name}
+              </ThemedText>
+              <View style={[styles.dot, { backgroundColor: location.color !== undefined ? ColorArray[location.color] : "gray" }]}></View>
+            </View>
+          )
+        )}
       </ThemedView>
     </ThemedView>
   );
