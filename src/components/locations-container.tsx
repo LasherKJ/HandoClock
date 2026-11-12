@@ -1,7 +1,7 @@
 import { Spacing } from "@/constants/theme";
 import { useLocationStore } from "@/hooks/use-location-store";
 import { useTheme } from "@/hooks/use-theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { EditModal } from "./ui/EditModal";
 import { LocationAddTrigger } from "./ui/LocationAddTrigger";
@@ -22,6 +22,10 @@ export function LocationsContainer() {
     useLocationStore.getState().removeLocation(id);
     setEditModalVisible(false);
   };
+
+  useEffect(() => {
+    console.log(useLocationStore.getState());
+  }, []);
 
   return (
     <View style={styles.wrapper}>

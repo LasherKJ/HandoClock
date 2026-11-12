@@ -12,7 +12,5 @@ import SwiftUI
 struct ClockWidgetBundle: WidgetBundle {
     var body: some Widget {
         ClockWidget()
-        ClockWidgetControl()
-        ClockWidgetLiveActivity()
     }
 }
